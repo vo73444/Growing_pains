@@ -10,10 +10,6 @@ class DynamicArray{
 
     int max_size;
 
-    int *arr[];
-
-    int *resize_array(int *arr, int current_size);
-
     public:
 
     DynamicArray();
@@ -22,7 +18,7 @@ class DynamicArray{
 
     int get_element_at_index(int index);
 
-    void size();
+    int size();
 
     void reset();
 

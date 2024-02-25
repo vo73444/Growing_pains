@@ -4,47 +4,35 @@
 using namespace std;
 
 DynamicArray::DynamicArray(){
-
-    start = *arr;
-
-    top = *arr;
-
     max_size = 5;
-    
-    int *arr = new int[max_size];
+
+    top = new int[max_size];
+
+    start = top;
 }
 
-
- int* DynamicArray::resize_array(int *arr, int current_size){
-    current_size = current_size + 1;
-    
-    int *new_array = new int [current_size];
-
-    for(int i = 0; i < current_size; i ++){
-        new_array[i] = arr[i];
-
-    }
-
-
-    delete[] arr;
-
-    return new_array;
-
-}
 
 void DynamicArray::append_element(int element){
 
     if(!is_full()){
-        top++;
         *top = element;
+        top++;
         
         cout << "Appended element " << element << " to the array.\n";
     }
 
     else{
-        *arr = resize_array(*arr, max_size);
-        top++;
-        *top = element;
+        //resize_array();
+        max_size = max_size + 1;
+        int *new_array = new int[max_size];
+
+        for(int i = 0; i < max_size - 1; i++){
+            *(new_array + i) = *(start + i);
+        }
+
+        delete start;
+
+        start = new_array;
 
         cout << "Increased the size of the array and appended the element ";
         cout << element << " to it.\n";
@@ -57,18 +45,22 @@ int DynamicArray::get_element_at_index(int index){
         return 0;
     }
     else{
-        return *arr[index];
+        return *(start + index);
     }
 }
 
-void DynamicArray::size(){
-    cout << max_size << "\n";
+int DynamicArray::size(){
+    return max_size;
 }
 
 void DynamicArray::reset(){
-    int *array_reset = new int [0];
+    max_size = 0;
+    int *array_reset = new int [max_size];
 
-    delete[] arr;
+    delete start;
+
+    start = array_reset;
+
 }
 
 bool DynamicArray::is_empty(){
