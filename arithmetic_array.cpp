@@ -1,9 +1,11 @@
 #include <iostream>
-#include "dynamic_array.hpp"
+#include "arithmetic_array.hpp"
 
 using namespace std;
 
-DynamicArray::DynamicArray(){
+ArithmeticDynamicArray::ArithmeticDynamicArray(int amount){
+    resize = amount;
+
     max_size = 5;
 
     top = new int[max_size];
@@ -12,7 +14,7 @@ DynamicArray::DynamicArray(){
 }
 
 
-void DynamicArray::append_element(int element){
+void ArithmeticDynamicArray::append_element(int element){
 
     if(!is_full()){
         *top = element;
@@ -23,16 +25,21 @@ void DynamicArray::append_element(int element){
 
     else{
         //resize_array();
-        max_size = max_size + 1;
+        max_size = max_size + resize;
         int *new_array = new int[max_size];
+        top = new_array;
 
-        for(int i = 0; i < max_size - 1; i++){
+        for(int i = 0; i < max_size - resize; i++){
             *(new_array + i) = *(start + i);
+            top++;
         }
 
         delete start;
 
         start = new_array;
+
+        *top = element;
+        top++;
 
         cout << "Increased the size of the array and appended the element ";
         cout << element << " to it.\n";
@@ -40,7 +47,7 @@ void DynamicArray::append_element(int element){
 }
 
 
-int DynamicArray::get_element_at_index(int index){
+int ArithmeticDynamicArray::get_element_at_index(int index){
     if(index < 0 || index > (max_size - 1)){
         return 0;
     }
@@ -50,28 +57,30 @@ int DynamicArray::get_element_at_index(int index){
     }
 }
 
-int DynamicArray::size(){
+int ArithmeticDynamicArray::size(){
     cout << "The size of the array is ";
     return max_size;
 }
 
-void DynamicArray::reset(){
+void ArithmeticDynamicArray::reset(){
     max_size = 0;
     int *array_reset = new int [max_size];
 
     delete start;
 
+    top = array_reset;
+
     start = array_reset;
 
 }
 
-bool DynamicArray::is_empty(){
+bool ArithmeticDynamicArray::is_empty(){
 
     return (top == start);
 
 }
 
-bool DynamicArray::is_full(){
-    return (start + max_size == top);
+bool ArithmeticDynamicArray::is_full(){
+    return (top == start + max_size);
 
 }
